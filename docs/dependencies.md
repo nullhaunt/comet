@@ -3,7 +3,7 @@
 Status: Accepted  
 Plan version: `engine-v0-plan-1`
 
-Comet has one first-party dependency: Doggo, pinned as a Git submodule at `lib/doggo`. The Gate 1 pin is Doggo revision `ee32bb343240105d53f2ca924ec6ea7db702b211`.
+Comet has one first-party dependency: Doggo, pinned as a Git submodule at `lib/doggo`. The Gate 1 pin is Doggo revision `2fbe5d80bba4db39b101370e0675ddb093d3bfb6`.
 
 Doggo owns the shared third-party dependency lock at `lib/doggo/docs/dependencies.md`. Comet does not add duplicate copies or alternate versions of those libraries.
 
