@@ -1,56 +1,55 @@
+#include <cstring>
+#include <doggo/Core.hpp>
+#include <doggo/Platform.hpp>
+#include <utility>
+
 #include "components/components_BootState.hpp"
 #include "components/components_Registration.hpp"
 #include "gameplay/gameplay_Systems.hpp"
 #include "presentation/presentation_State.hpp"
 
-#include <doggo/Core.hpp>
-#include <doggo/Platform.hpp>
-
-#include <cstring>
-#include <utility>
-
-int main(int argument_count, char** arguments) {
-  const bool smoke = argument_count > 1 && std::strcmp(arguments[1], "--smoke") == 0;
+int main(int argumentCount, char** arguments) {
+  const bool smoke = argumentCount > 1 && std::strcmp(arguments[1], "--smoke") == 0;
   doggo::core::TypeRegistry registry;
-  if (!comet::components::register_components(registry)) {
+  if (!comet::components::RegisterComponents(registry)) {
     return 1;
   }
-  comet::components::BootState boot_state{};
-  const auto presentation = comet::presentation::make_initial_state();
-  static_cast< void >(presentation);
+  comet::components::BootState bootState{};
+  const auto presentation = comet::presentation::MakeInitialState();
+  static_cast<void>(presentation);
 
-  doggo::platform::ApplicationConfig application_config{};
-  application_config.title = "Comet";
-  application_config.create_window = !smoke;
-  auto application_result = doggo::platform::Application::create(application_config);
-  if (!application_result) {
+  doggo::platform::ApplicationConfig applicationConfig{};
+  applicationConfig.m_Title = "Comet";
+  applicationConfig.m_CreateWindow = !smoke;
+  auto applicationResult = doggo::platform::Application::Create(applicationConfig);
+  if (!applicationResult) {
     return 2;
   }
-  auto application = std::move(application_result).value();
+  auto application = std::move(applicationResult).Value();
 
-  doggo::core::EngineConfig engine_config{};
-  engine_config.application_name = "Comet";
-  engine_config.development_services = COMET_DEVELOPMENT_SERVICES != 0;
-  auto engine_result = doggo::core::Engine::create(engine_config);
-  if (!engine_result) {
+  doggo::core::EngineConfig engineConfig{};
+  engineConfig.m_ApplicationName = "Comet";
+  engineConfig.m_DevelopmentServices = COMET_DEVELOPMENT_SERVICES != 0;
+  auto engineResult = doggo::core::Engine::Create(engineConfig);
+  if (!engineResult) {
     return 3;
   }
-  auto engine = std::move(engine_result).value();
-  if (!engine->initialize()) {
+  auto engine = std::move(engineResult).Value();
+  if (!engine->Initialize()) {
     return 4;
   }
 
-  while (!application->should_quit()) {
-    if (!application->poll_events() || !engine->run_frame()) {
+  while (!application->ShouldQuit()) {
+    if (!application->PollEvents() || !engine->RunFrame()) {
       return 5;
     }
-    comet::gameplay::run_fixed_tick(boot_state);
-    if (smoke && boot_state.fixed_ticks == 3) {
-      application->request_quit();
+    comet::gameplay::RunFixedTick(bootState);
+    if (smoke && bootState.m_FixedTicks == 3) {
+      application->RequestQuit();
     }
   }
 
-  engine->shutdown();
-  application->shutdown();
+  engine->Shutdown();
+  application->Shutdown();
   return 0;
 }

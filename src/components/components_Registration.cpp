@@ -2,9 +2,9 @@
 
 namespace comet::components {
 
-doggo::core::Result< void > register_components(doggo::core::TypeRegistry& registry) {
-  constexpr auto canonical_name = "comet.BootState";
-  return registry.register_type(doggo::core::make_type_id(canonical_name), canonical_name);
+doggo::core::Result<void> RegisterComponents(doggo::core::TypeRegistry& registry) {
+  constexpr auto canonicalName = "comet.BootState";
+  return registry.RegisterType(doggo::core::MakeTypeId(canonicalName), canonicalName);
 }
 
-} // namespace comet::components
+}  // namespace comet::components

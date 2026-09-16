@@ -1,6 +1,10 @@
 {
   "version": 6,
-  "cmakeMinimumRequired": { "major": 3, "minor": 25, "patch": 0 },
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 25,
+    "patch": 0
+  },
   "configurePresets": [
     {
       "name": "windows-clang-base",
@@ -9,6 +13,7 @@
       "binaryDir": "${sourceDir}/out/build/${presetName}",
       "cacheVariables": {
         "CMAKE_CXX_COMPILER": "clang-cl",
+        "CMAKE_C_COMPILER": "clang-cl",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
         "COMET_PLATFORM": "windows"
       }
@@ -89,16 +94,46 @@
     }
   ],
   "buildPresets": [
-    { "name": "windows-clang-dev", "configurePreset": "windows-clang-dev" },
-    { "name": "windows-clang-profile", "configurePreset": "windows-clang-profile" },
-    { "name": "windows-clang-shipping", "configurePreset": "windows-clang-shipping" },
-    { "name": "switch-dev", "configurePreset": "switch-dev" },
-    { "name": "switch-profile", "configurePreset": "switch-profile" },
-    { "name": "switch-shipping", "configurePreset": "switch-shipping" }
+    {
+      "name": "windows-clang-dev",
+      "configurePreset": "windows-clang-dev"
+    },
+    {
+      "name": "windows-clang-profile",
+      "configurePreset": "windows-clang-profile"
+    },
+    {
+      "name": "windows-clang-shipping",
+      "configurePreset": "windows-clang-shipping"
+    },
+    {
+      "name": "switch-dev",
+      "configurePreset": "switch-dev"
+    },
+    {
+      "name": "switch-profile",
+      "configurePreset": "switch-profile"
+    },
+    {
+      "name": "switch-shipping",
+      "configurePreset": "switch-shipping"
+    }
   ],
   "testPresets": [
-    { "name": "windows-clang-dev", "configurePreset": "windows-clang-dev", "output": { "outputOnFailure": true } },
-    { "name": "windows-clang-profile", "configurePreset": "windows-clang-profile", "output": { "outputOnFailure": true } }
+    {
+      "name": "windows-clang-dev",
+      "configurePreset": "windows-clang-dev",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "windows-clang-profile",
+      "configurePreset": "windows-clang-profile",
+      "output": {
+        "outputOnFailure": true
+      }
+    }
   ]
 }
 

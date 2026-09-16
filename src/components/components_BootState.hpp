@@ -5,7 +5,7 @@
 namespace comet::components {
 
 struct BootState {
-  std::uint64_t fixed_ticks = 0;
+  std::uint64_t m_FixedTicks = 0;
 };
 
-} // namespace comet::components
+}  // namespace comet::components

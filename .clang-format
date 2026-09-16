@@ -1,19 +1,4 @@
-BasedOnStyle: LLVM
-Language: Cpp
-IndentWidth: 2
-TabWidth: 2
-UseTab: Never
-
-# Braces
-BreakBeforeBraces: Attach
-
-# Spaces in brackets
-SpacesInAngles: true
-
-# Other settings
-PointerAlignment: Left
-ColumnLimit: 0
-AllowShortIfStatementsOnASingleLine: Never
-AllowShortBlocksOnASingleLine: Empty
-AllowShortLoopsOnASingleLine: false
-AllowShortFunctionsOnASingleLine: None
+BasedOnStyle: Google
+ColumnLimit: 120
+SpacesBeforeTrailingComments: 2
+BinPackParameters: false

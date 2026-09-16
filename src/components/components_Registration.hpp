@@ -4,6 +4,6 @@
 
 namespace comet::components {
 
-doggo::core::Result< void > register_components(doggo::core::TypeRegistry& registry);
+doggo::core::Result<void> RegisterComponents(doggo::core::TypeRegistry& registry);
 
-} // namespace comet::components
+}  // namespace comet::components

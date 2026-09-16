@@ -4,6 +4,6 @@
 
 namespace comet::gameplay {
 
-void run_fixed_tick(components::BootState& state) noexcept;
+void RunFixedTick(components::BootState& state) noexcept;
 
-} // namespace comet::gameplay
+}  // namespace comet::gameplay

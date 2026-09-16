@@ -5,9 +5,9 @@
 namespace comet::presentation {
 
 struct State {
-  doggo::math::Vec3 camera_origin{0.0F, 0.0F, 0.0F};
+  doggo::math::Vec3 m_CameraOrigin{0.0F, 0.0F, 0.0F};
 };
 
-State make_initial_state() noexcept;
+State MakeInitialState() noexcept;
 
-} // namespace comet::presentation
+}  // namespace comet::presentation

@@ -1,0 +1,19 @@
+int invalid_global = 0;
+constexpr int invalid_global_constant = 1;
+struct NamingExample {
+  int invalid_member = 0;
+  const int invalid_member_constant = 1;
+  static int invalid_static_member;
+  static constexpr int invalid_static_member_constant = 2;
+
+  void invalid_method(int invalid_parameter) {
+    int invalid_local = invalid_parameter;
+    const int invalid_local_constant = invalid_local;
+    static int invalid_static_local = invalid_local;
+    static const int invalid_static_local_constant = invalid_static_local;
+  }
+};
+
+int NamingExample::invalid_static_member = 0;
+
+void invalid_function() {}

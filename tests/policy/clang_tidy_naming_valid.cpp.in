@@ -1,0 +1,28 @@
+int g_GlobalValue = 0;
+const int g_GlobalConstant = 1;
+
+struct NamingExample {
+  int m_MemberValue = 0;
+  const int m_MemberConstant = 1;
+  static int s_StaticMemberValue;
+  static constexpr int s_StaticMemberConstant = 2;
+
+  void MemberFunction(int camelParameter) {
+    int camelVariable = camelParameter;
+    const int camelConstant = camelVariable;
+    static int s_StaticLocalValue = camelConstant;
+    static const int s_StaticLocalConstant = s_StaticLocalValue;
+  }
+};
+
+int NamingExample::s_StaticMemberValue = 0;
+
+void GlobalFunction(int camelParameter) {
+  int camelVariable = camelParameter;
+  static_cast<void>(camelVariable);
+}
+
+int main(int argumentCount, char** arguments) {
+  GlobalFunction(argumentCount);
+  return arguments == nullptr;
+}

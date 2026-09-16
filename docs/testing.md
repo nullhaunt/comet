@@ -13,6 +13,7 @@ Host tests cover:
 - Editor and cooker registration parity.
 - Deterministic cooking of the sandbox fixture.
 - C++ file-extension, private-header location/naming, and `.clang-format` policy checks.
+- A `.clang-tidy` naming-contract test with both compliant and deliberately invalid fixtures.
 - Absence of EnTT types, headers, and serialized identities in Comet code.
 
 Tests must not reach through Doggo abstractions to manipulate EnTT, Jolt, Vulkan, deko3d, SDL, or libnx directly.

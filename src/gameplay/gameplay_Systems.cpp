@@ -2,8 +2,6 @@
 
 namespace comet::gameplay {
 
-void run_fixed_tick(components::BootState& state) noexcept {
-  ++state.fixed_ticks;
-}
+void RunFixedTick(components::BootState& state) noexcept { ++state.m_FixedTicks; }
 
-} // namespace comet::gameplay
+}  // namespace comet::gameplay

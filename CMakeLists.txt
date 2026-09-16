@@ -111,4 +111,20 @@ if(COMET_BUILD_TESTS AND NOT COMET_PLATFORM STREQUAL "switch")
   else()
     message(STATUS "clang-format not found; comet-format test is unavailable")
   endif()
+
+  get_filename_component(COMET_CXX_COMPILER_DIR "${CMAKE_CXX_COMPILER}" DIRECTORY)
+  find_program(COMET_CLANG_TIDY_EXECUTABLE NAMES clang-tidy HINTS "${COMET_CXX_COMPILER_DIR}")
+  if(COMET_CLANG_TIDY_EXECUTABLE)
+    set(COMET_CLANG_TIDY_TEST_COMMAND
+      "${CMAKE_COMMAND}"
+      "-DCOMET_ROOT=${CMAKE_CURRENT_SOURCE_DIR}"
+      "-DCLANG_TIDY=${COMET_CLANG_TIDY_EXECUTABLE}"
+      "-DTEST_BINARY_DIR=${CMAKE_CURRENT_BINARY_DIR}/clang-tidy-naming"
+      -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/CheckClangTidyNaming.cmake"
+    )
+    add_test(NAME comet-clang-tidy-naming COMMAND ${COMET_CLANG_TIDY_TEST_COMMAND})
+    add_custom_target(comet-clang-tidy-naming-check COMMAND ${COMET_CLANG_TIDY_TEST_COMMAND} VERBATIM)
+  else()
+    message(STATUS "clang-tidy not found; comet-clang-tidy-naming test is unavailable")
+  endif()
 endif()
