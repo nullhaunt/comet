@@ -1,0 +1,3 @@
+[submodule "lib/doggo"]
+	path = lib/doggo
+	url = ../doggo

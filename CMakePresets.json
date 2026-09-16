@@ -1,0 +1,104 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": { "major": 3, "minor": 25, "patch": 0 },
+  "configurePresets": [
+    {
+      "name": "windows-clang-base",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "clang-cl",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "COMET_PLATFORM": "windows"
+      }
+    },
+    {
+      "name": "windows-clang-dev",
+      "inherits": "windows-clang-base",
+      "displayName": "Windows clang development",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "COMET_DEVELOPMENT_SERVICES": "ON",
+        "COMET_SHIPPING": "OFF"
+      }
+    },
+    {
+      "name": "windows-clang-profile",
+      "inherits": "windows-clang-base",
+      "displayName": "Windows clang profile",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "COMET_DEVELOPMENT_SERVICES": "ON",
+        "COMET_SHIPPING": "OFF"
+      }
+    },
+    {
+      "name": "windows-clang-shipping",
+      "inherits": "windows-clang-base",
+      "displayName": "Windows clang shipping",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "MinSizeRel",
+        "COMET_BUILD_TESTS": "OFF",
+        "COMET_DEVELOPMENT_SERVICES": "OFF",
+        "COMET_SHIPPING": "ON"
+      }
+    },
+    {
+      "name": "switch-base",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "toolchainFile": "$env{DEVKITPRO}/cmake/Switch.cmake",
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "COMET_BUILD_TESTS": "OFF",
+        "COMET_HOST_TOOLS_DIR": "$env{COMET_HOST_TOOLS_DIR}",
+        "COMET_PLATFORM": "switch"
+      }
+    },
+    {
+      "name": "switch-dev",
+      "inherits": "switch-base",
+      "displayName": "Switch development",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "COMET_DEVELOPMENT_SERVICES": "ON",
+        "COMET_SHIPPING": "OFF"
+      }
+    },
+    {
+      "name": "switch-profile",
+      "inherits": "switch-base",
+      "displayName": "Switch profile",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "COMET_DEVELOPMENT_SERVICES": "ON",
+        "COMET_SHIPPING": "OFF"
+      }
+    },
+    {
+      "name": "switch-shipping",
+      "inherits": "switch-base",
+      "displayName": "Switch shipping",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "MinSizeRel",
+        "COMET_DEVELOPMENT_SERVICES": "OFF",
+        "COMET_SHIPPING": "ON"
+      }
+    }
+  ],
+  "buildPresets": [
+    { "name": "windows-clang-dev", "configurePreset": "windows-clang-dev" },
+    { "name": "windows-clang-profile", "configurePreset": "windows-clang-profile" },
+    { "name": "windows-clang-shipping", "configurePreset": "windows-clang-shipping" },
+    { "name": "switch-dev", "configurePreset": "switch-dev" },
+    { "name": "switch-profile", "configurePreset": "switch-profile" },
+    { "name": "switch-shipping", "configurePreset": "switch-shipping" }
+  ],
+  "testPresets": [
+    { "name": "windows-clang-dev", "configurePreset": "windows-clang-dev", "output": { "outputOnFailure": true } },
+    { "name": "windows-clang-profile", "configurePreset": "windows-clang-profile", "output": { "outputOnFailure": true } }
+  ]
+}
+

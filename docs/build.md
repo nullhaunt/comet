@@ -23,6 +23,8 @@ Comet exposes the same public preset names and toolchain baselines as Doggo:
 - `switch-profile`
 - `switch-shipping`
 
+CLion should open the checked-in `CMakePresets.json`. Configure its toolchain so `clang-cl`, Ninja, and the Windows SDK environment are available; keep machine-specific paths in the CLion toolchain or ignored `CMakeUserPresets.json`.
+
 Canonical host commands:
 
 ```powershell
