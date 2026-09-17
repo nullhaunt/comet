@@ -1,9 +1,9 @@
-#include <doggo/Core.hpp>
-
 #include "components/components_BootState.hpp"
 #include "components/components_Registration.hpp"
 #include "gameplay/gameplay_Systems.hpp"
 #include "presentation/presentation_State.hpp"
+
+#include <doggo/Core.hpp>
 
 int main() {
   doggo::core::TypeRegistry registry;

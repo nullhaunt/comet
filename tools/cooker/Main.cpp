@@ -1,7 +1,8 @@
-#include <cstdio>
+#include "components/components_Registration.hpp"
+
 #include <doggo/Core.hpp>
 
-#include "components/components_Registration.hpp"
+#include <cstdio>
 
 int main() {
   doggo::core::TypeRegistry registry;

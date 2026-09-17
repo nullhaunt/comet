@@ -1,12 +1,13 @@
-#include <cstring>
-#include <doggo/Core.hpp>
-#include <doggo/Platform.hpp>
-#include <utility>
-
 #include "components/components_BootState.hpp"
 #include "components/components_Registration.hpp"
 #include "gameplay/gameplay_Systems.hpp"
 #include "presentation/presentation_State.hpp"
+
+#include <doggo/Core.hpp>
+#include <doggo/Platform.hpp>
+
+#include <cstring>
+#include <utility>
 
 int main(int argumentCount, char** arguments) {
   const bool smoke = argumentCount > 1 && std::strcmp(arguments[1], "--smoke") == 0;

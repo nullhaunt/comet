@@ -2,6 +2,8 @@
 
 namespace comet::presentation {
 
-State MakeInitialState() noexcept { return {}; }
+State MakeInitialState() noexcept {
+  return {};
+}
 
 }  // namespace comet::presentation
