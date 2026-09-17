@@ -31,6 +31,9 @@ foreach(path IN LISTS scan_files)
     if(content_lower MATCHES "entt")
       message(FATAL_ERROR "Comet must not name EnTT in source or serialized data: ${path}")
     endif()
+    if(path MATCHES "[/\\\\]src[/\\\\]" AND
+       content_lower MATCHES "(^|[^a-z0-9_])(vulkan|deko3d|libnx|sdl3)([^a-z0-9_]|$)|switch[.]h")
+      message(FATAL_ERROR "Comet source must use Doggo portable APIs instead of platform/backend APIs: ${path}")
+    endif()
   endif()
 endforeach()
-

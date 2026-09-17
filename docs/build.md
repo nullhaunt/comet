@@ -48,6 +48,11 @@ cmake --build --preset switch-dev
 Host and Switch build trees are separate beneath `out/build/<preset>`. Cooked assets are written beneath
 `out/assets/<target-profile>` and packaging consumes only the matching profile.
 
+Gate 2 shader manifests are compiled as part of the Comet application graph. Windows writes SPIR-V beneath
+`out/build/<preset>/generated/shaders/<shader-name>/`. Switch writes DKSH to the equivalent generated shader
+directory, stages the compiled blobs and manifest beneath `generated/romfs/comet-app/`, and packages that ROMFS
+tree into `comet-app.nro`. Neither runtime consumes source GLSL.
+
 ## Integration requirements
 
 - Add Doggo through `add_subdirectory(lib/doggo)` without altering Doggo source or cache defaults globally.

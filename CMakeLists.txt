@@ -38,6 +38,71 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(CometPolicies)
 comet_check_source_policy("${CMAKE_CURRENT_SOURCE_DIR}")
 
+if(COMET_PLATFORM STREQUAL "windows")
+  find_package(Vulkan 1.4.357 REQUIRED COMPONENTS glslc)
+  set(COMET_SHADER_COMPILER "$<TARGET_FILE:Vulkan::glslc>")
+  set(COMET_SHADER_FORMAT spirv)
+  set(COMET_FIXTURE_SHADER_EXTENSION spv)
+  set(COMET_FIXTURE_SHADER_IS_DKSH 0)
+  set(COMET_DIAGNOSTIC_LOG_PATH "")
+else()
+  find_program(COMET_UAM_EXECUTABLE NAMES uam HINTS "$ENV{DEVKITPRO}/tools/bin" REQUIRED)
+  set(COMET_SHADER_COMPILER "${COMET_UAM_EXECUTABLE}")
+  set(COMET_SHADER_FORMAT dksh)
+  set(COMET_FIXTURE_SHADER_EXTENSION dksh)
+  set(COMET_FIXTURE_SHADER_IS_DKSH 1)
+  set(COMET_DIAGNOSTIC_LOG_PATH "sdmc:/comet-gate-2.log")
+endif()
+
+doggo_add_shader_manifest(comet-fixture-shaders
+  MANIFEST "${CMAKE_CURRENT_SOURCE_DIR}/assets/source/shaders/fixtures/textured.shader.json"
+  FORMAT "${COMET_SHADER_FORMAT}"
+  COMPILER "${COMET_SHADER_COMPILER}"
+)
+get_target_property(COMET_FIXTURE_SHADER_DIRECTORY comet-fixture-shaders DOGGO_SHADER_OUTPUT_DIRECTORY)
+get_target_property(COMET_FIXTURE_SHADER_OUTPUTS comet-fixture-shaders DOGGO_SHADER_OUTPUTS)
+
+if(COMET_PLATFORM STREQUAL "switch")
+  set(COMET_FIXTURE_ROMFS_ROOT "${CMAKE_CURRENT_BINARY_DIR}/generated/romfs/comet-app")
+  set(COMET_FIXTURE_ROMFS_SHADER_DIRECTORY
+    "${COMET_FIXTURE_ROMFS_ROOT}/shaders/comet.fixture.textured"
+  )
+  set(COMET_FIXTURE_ROMFS_OUTPUTS
+    "${COMET_FIXTURE_ROMFS_SHADER_DIRECTORY}/vertex.dksh"
+    "${COMET_FIXTURE_ROMFS_SHADER_DIRECTORY}/fragment.dksh"
+    "${COMET_FIXTURE_ROMFS_SHADER_DIRECTORY}/comet.fixture.textured.shader.json"
+  )
+  add_custom_command(
+    OUTPUT ${COMET_FIXTURE_ROMFS_OUTPUTS}
+    COMMAND "${CMAKE_COMMAND}" -E make_directory "${COMET_FIXTURE_ROMFS_SHADER_DIRECTORY}"
+    COMMAND "${CMAKE_COMMAND}" -E copy_if_different
+      "${COMET_FIXTURE_SHADER_DIRECTORY}/vertex.dksh"
+      "${COMET_FIXTURE_ROMFS_SHADER_DIRECTORY}/vertex.dksh"
+    COMMAND "${CMAKE_COMMAND}" -E copy_if_different
+      "${COMET_FIXTURE_SHADER_DIRECTORY}/fragment.dksh"
+      "${COMET_FIXTURE_ROMFS_SHADER_DIRECTORY}/fragment.dksh"
+    COMMAND "${CMAKE_COMMAND}" -E copy_if_different
+      "${COMET_FIXTURE_SHADER_DIRECTORY}/comet.fixture.textured.shader.json"
+      "${COMET_FIXTURE_ROMFS_SHADER_DIRECTORY}/comet.fixture.textured.shader.json"
+    DEPENDS ${COMET_FIXTURE_SHADER_OUTPUTS}
+    COMMENT "Staging comet.fixture.textured in Switch ROMFS"
+    VERBATIM
+  )
+  set(COMET_FIXTURE_VERTEX_SHADER_PATH
+    "romfs:/shaders/comet.fixture.textured/vertex.${COMET_FIXTURE_SHADER_EXTENSION}"
+  )
+  set(COMET_FIXTURE_FRAGMENT_SHADER_PATH
+    "romfs:/shaders/comet.fixture.textured/fragment.${COMET_FIXTURE_SHADER_EXTENSION}"
+  )
+else()
+  set(COMET_FIXTURE_VERTEX_SHADER_PATH
+    "${COMET_FIXTURE_SHADER_DIRECTORY}/vertex.${COMET_FIXTURE_SHADER_EXTENSION}"
+  )
+  set(COMET_FIXTURE_FRAGMENT_SHADER_PATH
+    "${COMET_FIXTURE_SHADER_DIRECTORY}/fragment.${COMET_FIXTURE_SHADER_EXTENSION}"
+  )
+endif()
+
 comet_add_library(components
   src/components/components_BootState.cpp
   src/components/components_BootState.hpp
@@ -53,10 +118,24 @@ comet_add_library(gameplay
 target_link_libraries(comet-gameplay PUBLIC comet::components doggo::core)
 
 comet_add_library(presentation
+  src/presentation/presentation_RenderFixture.cpp
+  src/presentation/presentation_RenderFixture.hpp
   src/presentation/presentation_State.cpp
   src/presentation/presentation_State.hpp
 )
-target_link_libraries(comet-presentation PUBLIC comet::components doggo::math)
+target_compile_definitions(comet-presentation PRIVATE
+  COMET_FIXTURE_SHADER_IS_DKSH=${COMET_FIXTURE_SHADER_IS_DKSH}
+  "COMET_FIXTURE_VERTEX_SHADER_PATH=\"${COMET_FIXTURE_VERTEX_SHADER_PATH}\""
+  "COMET_FIXTURE_FRAGMENT_SHADER_PATH=\"${COMET_FIXTURE_FRAGMENT_SHADER_PATH}\""
+  "COMET_DIAGNOSTIC_LOG_PATH=\"${COMET_DIAGNOSTIC_LOG_PATH}\""
+)
+target_link_libraries(comet-presentation PUBLIC
+  comet::components
+  doggo::core
+  doggo::math
+  doggo::platform
+  doggo::rhi
+)
 
 comet_add_executable(comet-app src/Main.cpp)
 target_link_libraries(comet-app PRIVATE
@@ -66,8 +145,12 @@ target_link_libraries(comet-app PRIVATE
   doggo::core
   doggo::platform
 )
+add_dependencies(comet-app comet-fixture-shaders)
 if(COMET_PLATFORM STREQUAL "switch")
-  doggo_add_switch_package(comet-app "Comet" "Comet")
+  doggo_add_switch_package(comet-app "Comet Gate 2 Fixture" "Comet"
+    ROMFS "${COMET_FIXTURE_ROMFS_ROOT}"
+    DEPENDS ${COMET_FIXTURE_ROMFS_OUTPUTS}
+  )
 endif()
 
 if(NOT COMET_PLATFORM STREQUAL "switch" AND NOT COMET_SHIPPING)

@@ -18,6 +18,13 @@ Host tests cover:
 
 Tests must not reach through Doggo abstractions to manipulate EnTT, Jolt, Vulkan, deko3d, SDL, or libnx directly.
 
+## Gate 2 render fixture
+
+After building `windows-clang-dev`, run `out/build/windows-clang-dev/bin/comet-app.exe --render-smoke`. The command
+must render and present three frames, report GPU completion, retire its resources, and exit with code 0 and no
+validation errors. The Switch build packages the same Comet-owned fixture inputs and target-compiled shaders, but its
+visible result and shutdown behavior require a physical hardware run.
+
 ## Content validation
 
 The sandbox fixture includes:

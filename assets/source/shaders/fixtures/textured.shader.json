@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "name": "comet.fixture.textured",
+  "stages": [
+    {
+      "stage": "vertex",
+      "source": "textured.vert"
+    },
+    {
+      "stage": "fragment",
+      "source": "textured.frag"
+    }
+  ],
+  "bindings": [
+    {
+      "set": 0,
+      "binding": 0,
+      "type": "combinedImageSampler",
+      "count": 1,
+      "stages": ["fragment"]
+    }
+  ],
+  "vertexAttributes": [
+    {
+      "location": 0,
+      "format": "float3",
+      "offset": 0
+    },
+    {
+      "location": 1,
+      "format": "float2",
+      "offset": 12
+    }
+  ],
+  "vertexStride": 20
+}
